@@ -1,34 +1,22 @@
-import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
+import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { Plane } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuthUser } from "./ProtectedRoute";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 
-export const Route = createFileRoute("/_authenticated/app")({
-  head: () => ({
-    meta: [
-      { title: "Dashboard — Flight Price Notifier" },
-      { name: "description", content: "你的航線追蹤儀表板。" },
-      { property: "og:title", content: "Dashboard — Flight Price Notifier" },
-      { property: "og:description", content: "Your flight route dashboard." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: AppShell,
-});
-
-function AppShell() {
-  const { user } = Route.useRouteContext();
+export default function AppShell() {
+  const user = useAuthUser();
   const navigate = useNavigate();
-  const router = useRouter();
   const queryClient = useQueryClient();
+
+  useDocumentTitle("Dashboard — Flight Price Notifier");
 
   async function signOut() {
     await queryClient.cancelQueries();
     queryClient.clear();
     await supabase.auth.signOut();
-    await router.invalidate();
-    navigate({ to: "/auth", replace: true });
+    navigate("/auth", { replace: true });
   }
 
   return (
@@ -54,7 +42,9 @@ function AppShell() {
       <main className="mx-auto max-w-5xl px-5 py-20">
         <h1 className="text-3xl font-semibold tracking-tight">Hi {user.email}</h1>
         <div className="mt-8 rounded-2xl border border-border bg-card p-8">
-          <p className="text-base">你的航線追蹤儀表板即將上線 — 下一個里程碑會加上訂閱航線的功能。</p>
+          <p className="text-base">
+            你的航線追蹤儀表板即將上線 — 下一個里程碑會加上訂閱航線的功能。
+          </p>
           <p className="mt-3 text-sm text-muted-foreground">
             Your dashboard is coming soon. Route-subscription will be added in the next milestone.
           </p>
