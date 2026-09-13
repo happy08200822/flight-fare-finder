@@ -6,7 +6,8 @@
 
 /*
  * Design system — Flight Price Notifier
- * Dark-first theme: near-black background, violet accent.
+ * Dreamy sky theme: soft blue-to-peach gradient daylight, warm coral accent,
+ * cream surfaces, gentle rounded shapes — inspired by a surreal cloud-and-tree sky.
  */
 
 @theme inline {
@@ -46,31 +47,31 @@
 }
 
 :root {
-  --radius: 0.75rem;
-  --background: oklch(0.145 0.02 285);
-  --foreground: oklch(0.95 0.01 280);
-  --card: oklch(0.185 0.025 285);
-  --card-foreground: oklch(0.95 0.01 280);
-  --popover: oklch(0.185 0.025 285);
-  --popover-foreground: oklch(0.95 0.01 280);
-  --primary: oklch(0.65 0.22 285);
-  --primary-foreground: oklch(0.98 0.005 285);
-  --secondary: oklch(0.24 0.03 285);
-  --secondary-foreground: oklch(0.95 0.01 280);
-  --muted: oklch(0.24 0.03 285);
-  --muted-foreground: oklch(0.66 0.03 285);
-  --accent: oklch(0.28 0.06 285);
-  --accent-foreground: oklch(0.95 0.01 280);
-  --destructive: oklch(0.65 0.2 25);
-  --destructive-foreground: oklch(0.98 0.005 25);
-  --border: oklch(0.27 0.03 285);
-  --input: oklch(0.3 0.03 285);
-  --ring: oklch(0.65 0.22 285);
-  --chart-1: oklch(0.65 0.22 285);
-  --chart-2: oklch(0.7 0.17 200);
-  --chart-3: oklch(0.75 0.16 150);
-  --chart-4: oklch(0.75 0.14 60);
-  --chart-5: oklch(0.6 0.22 340);
+  --radius: 1.25rem;
+  --background: oklch(0.94 0.02 250);
+  --foreground: oklch(0.32 0.05 275);
+  --card: oklch(0.99 0.006 80);
+  --card-foreground: oklch(0.32 0.05 275);
+  --popover: oklch(0.99 0.006 80);
+  --popover-foreground: oklch(0.32 0.05 275);
+  --primary: oklch(0.68 0.17 25);
+  --primary-foreground: oklch(0.99 0.005 90);
+  --secondary: oklch(0.9 0.025 255);
+  --secondary-foreground: oklch(0.32 0.05 275);
+  --muted: oklch(0.92 0.015 255);
+  --muted-foreground: oklch(0.52 0.04 265);
+  --accent: oklch(0.87 0.06 320);
+  --accent-foreground: oklch(0.32 0.05 275);
+  --destructive: oklch(0.6 0.2 18);
+  --destructive-foreground: oklch(0.99 0.005 90);
+  --border: oklch(0.85 0.025 260);
+  --input: oklch(0.9 0.02 258);
+  --ring: oklch(0.68 0.17 25);
+  --chart-1: oklch(0.68 0.17 25);
+  --chart-2: oklch(0.72 0.1 230);
+  --chart-3: oklch(0.8 0.08 320);
+  --chart-4: oklch(0.78 0.12 90);
+  --chart-5: oklch(0.68 0.1 190);
 }
 
 @layer base {
@@ -80,6 +81,11 @@
 
   body {
     background-color: var(--color-background);
+    background-image:
+      radial-gradient(60% 45% at 12% -5%, oklch(0.88 0.07 30 / 0.6), transparent 70%),
+      radial-gradient(55% 45% at 100% 0%, oklch(0.85 0.06 300 / 0.45), transparent 70%),
+      linear-gradient(180deg, oklch(0.93 0.03 250) 0%, oklch(0.95 0.02 300) 45%, oklch(0.96 0.025 40) 100%);
+    background-attachment: fixed;
     color: var(--color-foreground);
     font-family: var(--font-sans);
   }
