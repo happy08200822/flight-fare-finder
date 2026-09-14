@@ -23,3 +23,7 @@ dist
 *.sw?
 .vercel
 .env*
+
+# Lambda deploy artifacts (source of truth is index.py)
+lambda/*/function.zip
+lambda/*/__pycache__/

@@ -69,6 +69,29 @@ def fetch_cheapest(origin, destination, month, token, currency):
     }
 
 
+def _is_eligible(item, now_iso):
+    """Grace-aware paywall gate: active subscribers always qualify; a cancelled
+    subscriber keeps getting alerts through current_period_end (string-compared —
+    every writer uses the same fixed %Y-%m-%dT%H:%M:%SZ format). Rows with no
+    subscription_status (pre-M2) or pending_payment/expired never qualify."""
+    status = item.get("subscription_status")
+    if status == "active":
+        return True
+    if status == "cancelled":
+        end = item.get("current_period_end")
+        if end and end >= now_iso:
+            return True
+        if end:
+            _subs.update_item(
+                Key={"email": item["email"], "route": item["route"]},
+                UpdateExpression="SET subscription_status = :expired",
+                ExpressionAttributeValues={":expired": "expired"},
+            )
+            print("lazily expired", item["email"], item["route"])
+        return False
+    return False
+
+
 def handler(event, context):
     origin = event["origin"]
     destination = event["destination"]
@@ -89,11 +112,14 @@ def handler(event, context):
         ExpressionAttributeValues={":r": route},
     )
     items = result.get("Items", [])
+    now_iso = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     matched = 0
     for it in items:
         tp = it.get("target_price")
         if tp is None:
+            continue
+        if not _is_eligible(it, now_iso):
             continue
         if Decimal(str(tp)) >= Decimal(str(tw["price"])):
             body = {
